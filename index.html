@@ -13,12 +13,44 @@
     <h1 class="header lg-text">Tic-Tac-Toe</h1>
     <p class="banner md-text">Player 1 (X) vs Computer (O)</p>
     <div class="row">
-        <div class="playerCard"></div>
-        <div class="gameBoard"></div>
-        <div class="playerCard"></div>
+        <div class="playerCard">
+            <h2 class="playerCard__header lg-text">X</h2>
+            <ul class="playerCard__userType">
+                <li class="playerCard__option sm-text playerCard__option--active">Player</li>
+                <li class="playerCard__option sm-text">Computer</li>
+            </ul>
+            <input type="text" placeholder="name..." class="playerCard__nameInput sm-text">
+        </div>
+        <div class="gameBoard">
+            <div class="gameBoard__tile md-text">X</div>
+            <div class="gameBoard__tile md-text">O</div>
+            <div class="gameBoard__tile md-text">X</div>
+            <div class="gameBoard__tile md-text">O</div>
+            <div class="gameBoard__tile md-text">X</div>
+            <div class="gameBoard__tile md-text">O</div>
+            <div class="gameBoard__tile md-text">X</div>
+            <div class="gameBoard__tile md-text">O</div>
+            <div class="gameBoard__tile md-text">X</div>
+        </div>
+        <div class="playerCard">
+            <h2 class="playerCard__header lg-text">O</h2>
+            <ul class="playerCard__userType">
+                <li class="playerCard__option sm-text">Player</li>
+                <li class="playerCard__option sm-text playerCard__option--active">Computer</li>
+            </ul>
+            <input type="text" placeholder="name..." class="playerCard__nameInput sm-text">
+        </div>
     </div>
-    <div class="row">
-        <div class="scoreBoard"></div>
+    <div class="scoreBoard">
+        <div class="scoreBoard__score">
+            <h3 class="score md-text">Score</h3>
+            <p class="score__scoreX md-text">X: </p>
+            <p class="score_scoreO md-text">O: </p>
+        </div>
+        <div class="scoreBoard__buttons">
+            <div class="button md-text">Restart</div>
+            <div class="button md-text button--danger">End</div>
+        </div>
     </div>
 </div>
 <script src="index.js"></script>

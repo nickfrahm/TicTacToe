@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+.container {
+    font-family: "Roboto", sans-serif;
+    background-color: #C4C4C4;
+    height: 100vh;
+    width: 100vw;
+}
+
+.lg-text {
+    font-size: 72px;
+    font-weight: 200;
+}
+
+.md-text {
+    font-size: 36px;
+}
+
+.sm-text {
+    font-size: 24px;
+    ;
+}
+
+.header,
+.banner {
+    margin: auto;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px;
+}
+
+.gameBoard {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 30%;
+    margin: auto;
+}
+
+.gameBoard__tile {
+    width: 30%;
+    text-align: center;
+    border-radius: 2px;
+    background-color: #E3E3E3;
+    margin: 2px;
+}
+
+.playerCard {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    background-color: #E3E3E3;
+    align-items: center;
+    border-radius: 2px;
+    padding: 10px;
+}
+
+.playerCard__userType {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    padding-top: 5px;
+}
+
+.playerCard__option {
+    text-align: center;
+    width: 40%;
+}
+
+.playerCard__nameInput {
+    width: 70%;
+    border-radius: 2px;
+    border: 0px solid;
+    margin-top: 15px;
+}
