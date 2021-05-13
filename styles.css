@@ -29,29 +29,35 @@
 
 .row {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
     margin: 15px;
 }
 
 .gameBoard {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
     width: 30%;
-    margin: auto;
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    grid-template-rows: 100px 100px 100px;
+    text-align: center;
 }
 
 .gameBoard__tile {
-    width: 30%;
-    text-align: center;
-    border-radius: 2px;
     background-color: #E3E3E3;
-    margin: 2px;
-    padding: 20px 0px 20px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 98%;
+    height: 98%;
+    border-radius: 2px;
+}
+
+.tile__content {
+
 }
 
 .playerCard {
-    width: 30%;
+    width: 28%;
     display: flex;
     flex-direction: column;
     background-color: #E3E3E3;
