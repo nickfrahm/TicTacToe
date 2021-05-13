@@ -14,7 +14,7 @@
     <div class="container">
         <h1 class="header lg-text">Tic-Tac-Toe</h1>
         <p class="banner md-text">Player 1 (X) vs Computer (O)</p>
-        <div class="row">
+        <div class="row__main">
             <div class="playerCard">
                 <h2 class="playerCard__header lg-text">X</h2>
                 <ul class="playerCard__userType">
@@ -43,19 +43,24 @@
                 <input type="text" placeholder="name..." class="playerCard__nameInput sm-text">
             </div>
         </div>
-        <div class="scoreBoard">
-            <div class="scoreBoard__score">
-                <h3 class="score md-text">Score</h3>
-                <p class="score__scoreX md-text">X: </p>
-                <p class="score_scoreO md-text">O: </p>
-            </div>
-            <div class="scoreBoard__buttons">
-                <div class="button md-text">Restart</div>
-                <div class="button md-text button--danger">End</div>
+        <div class="row__scoreBoard">
+            <div class="scoreBoard">
+                <div class="scoreBoard__score">
+                    <h3 class="score md-text">Score</h3>
+                    <div class="score__playerScores">
+                        <p class="score__scoreX md-text">X: </p>
+                        <p class="score_scoreO md-text">O: </p>
+                    </div>
+                </div>
+                <div class="scoreBoard__buttons">
+                    <div class="button sm-text">Restart</div>
+                    <div class="button sm-text button--danger">End</div>
+                </div>
             </div>
         </div>
     </div>
+    <img src="wave1.svg" alt="wave1" class="wave">
+    <img src="wave2.svg" alt="wave1" class="wave">
     <script src="index.js"></script>
 </body>
-
 </html>

@@ -27,7 +27,7 @@
     text-align: center;
 }
 
-.row {
+.row__main {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -52,8 +52,9 @@
     border-radius: 2px;
 }
 
-.tile__content {
-
+.gameBoard__tile:hover {
+    cursor: pointer;
+    background-color: #dddddd;
 }
 
 .playerCard {
@@ -78,9 +79,72 @@
     width: 40%;
 }
 
+.playerCard__option:hover {
+    cursor: pointer;
+    text-shadow: 2px 2px #F2A0FF;
+}
+
 .playerCard__nameInput {
     width: 70%;
     border-radius: 2px;
     border: 0px solid;
     margin-top: 15px;
+    padding-left: 5px;
+}
+
+.row__scoreBoard {
+    display: flex;
+    justify-content: center;
+}
+
+.scoreBoard {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    width: 30%;
+    background-color: #E3E3E3;
+    padding: 15px;
+    border-radius: 2px;
+    z-index: 100;
+}
+
+.score {
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+.score__playerScores {
+    text-align: left;
+}
+
+.scoreBoard__buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.button {
+    background-color: #C4C4C4;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.button--danger {
+    color: red;
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: #a1a1a1;
+}
+
+.playerCard__option--active {
+    text-shadow: 2px 2px #F2A0FF;
+}
+
+.wave {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 1;
 }
