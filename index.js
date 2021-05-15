@@ -7,23 +7,41 @@ window.addEventListener("load", () => {
   playerO = playerFactory("Computer", "O", false);
 });
 
+//get player type options
+const xTypePlayer = document.getElementById("Xplayer");
+const xTypeComputer = document.getElementById("Xcomputer");
+const oTypePlayer = document.getElementById("Oplayer");
+const oTypeComputer = document.getElementById("Ocomputer");
+
+[Xplayer, Xcomputer, Oplayer, Ocomputer].forEach((playerType) => {
+  playerType.addEventListener("click", (e) => {
+    game.handlePlayerSwitch(e.target.id);
+  });
+});
+
 //add click listener--> main driver for game logic.
 const boardTiles = document.querySelectorAll(".gameBoard__tile");
 boardTiles.forEach((tile) => {
   tile.addEventListener("click", () => {
-    //on click, try and play a square and check winner
+    if (playerX.checkHuman() && playerO.checkHuman()) {
+      //on click, try and play a square and check winner (player v player)
     if (game.getTilesMarked() < 9) {
       if (game.checkTurn() === "X") {
-        tile.firstChild.innerHTML = playerX.marker;
-        const sq = gameBoard.determineSquare(tile.id.toString());
-        gameBoard.setBoard(sq[0], sq[1], playerX.marker);
-        game.checkWinner(playerX.marker);
+        if (tile.firstChild.innerHTML === "") {
+          tile.firstChild.innerHTML = playerX.marker;
+          const sq = gameBoard.determineSquare(tile.id.toString());
+          gameBoard.setBoard(sq[0], sq[1], playerX.marker);
+          game.checkWinner(playerX.marker);
+        }
       } else {
-        tile.firstChild.innerHTML = playerO.marker;
-        const sq = gameBoard.determineSquare(tile.id.toString());
-        gameBoard.setBoard(sq[0], sq[1], playerO.marker);
-        game.checkWinner(playerO.marker);
+        if (tile.firstChild.innerHTML === "") {
+          tile.firstChild.innerHTML = playerO.marker;
+          const sq = gameBoard.determineSquare(tile.id.toString());
+          gameBoard.setBoard(sq[0], sq[1], playerO.marker);
+          game.checkWinner(playerO.marker);
+        }
       }
+    }
     }
   });
 });
@@ -38,7 +56,15 @@ const playerFactory = (name, marker, isHuman) => {
     name = newName;
   };
 
-  return { changeName, getName, marker };
+  const changePlayerType = () => {
+    isHuman = !isHuman;
+  }
+
+  const checkHuman = () => {
+    return isHuman;
+  }
+
+  return { changeName, getName, marker, checkHuman, changePlayerType};
 };
 
 //board module pattern
@@ -120,6 +146,8 @@ const game = (() => {
   const resetScores = () => {
     scoreX = 0;
     scoreO = 0;
+    scoreBoardX.innerHTML = `X: ${scoreO}`;
+    scoreBoardO.innerHTML = `O: ${scoreO}`;
   };
 
   const checkWinner = (marker) => {
@@ -202,7 +230,44 @@ const game = (() => {
     }
   };
 
+  const handlePlayerSwitch = (id) => {
+    console.log(id);
+    //if it's the X card
+    if (id === "Xcomputer") {
+      if (playerO.checkHuman()) {
+        playerX.changePlayerType();
+        xTypeComputer.classList.add("playerCard__option--active")
+        xTypePlayer.classList.remove("playerCard__option--active");
+        gameBoard.clearBoard();
+        game.resetScores();
+      }
+    } else if (id === "Xplayer") {
+      playerX.changePlayerType();
+      xTypePlayer.classList.add("playerCard__option--active");
+      xTypeComputer.classList.remove("playerCard__option--active")
+      gameBoard.clearBoard();
+      game.resetScores();
+    }
+
+    //if it's the O Card
+    if (id === "Ocomputer") {
+      if (playerO.checkHuman()) {
+        playerO.changePlayerType();
+        oTypeComputer.classList.add("playerCard__option--active")
+        oTypePlayer.classList.remove("playerCard__option--active");
+        gameBoard.clearBoard();
+        game.resetScores();
+      }
+    } else if (id === "Oplayer") {
+      playerO.changePlayerType();
+      oTypePlayer.classList.add("playerCard__option--active");
+      oTypeComputer.classList.remove("playerCard__option--active")
+      gameBoard.clearBoard();
+      game.resetScores();
+    }
+  }
+
   return {
-    resetScores, checkTurn, checkWinner, getTilesMarked
+    resetScores, checkTurn, checkWinner, getTilesMarked, handlePlayerSwitch
   };
 })();
