@@ -25,23 +25,54 @@ boardTiles.forEach((tile) => {
   tile.addEventListener("click", () => {
     if (playerX.checkHuman() && playerO.checkHuman()) {
       //on click, try and play a square and check winner (player v player)
-    if (game.getTilesMarked() < 9) {
-      if (game.checkTurn() === "X") {
-        if (tile.firstChild.innerHTML === "") {
-          tile.firstChild.innerHTML = playerX.marker;
-          const sq = gameBoard.determineSquare(tile.id.toString());
-          gameBoard.setBoard(sq[0], sq[1], playerX.marker);
-          game.checkWinner(playerX.marker);
-        }
-      } else {
-        if (tile.firstChild.innerHTML === "") {
-          tile.firstChild.innerHTML = playerO.marker;
-          const sq = gameBoard.determineSquare(tile.id.toString());
-          gameBoard.setBoard(sq[0], sq[1], playerO.marker);
-          game.checkWinner(playerO.marker);
+      if (game.getTilesMarked() < 9) {
+        if (game.checkTurn() === "X") {
+          if (tile.firstChild.innerHTML === "") {
+            game.increaseTilesMarked();
+            tile.firstChild.innerHTML = playerX.marker;
+            const sq = gameBoard.determineSquare(tile.id.toString());
+            gameBoard.setBoard(sq[0], sq[1], playerX.marker);
+            game.checkWinner(playerX.marker);
+          }
+        } else {
+          if (tile.firstChild.innerHTML === "") {
+            game.increaseTilesMarked();
+            tile.firstChild.innerHTML = playerO.marker;
+            const sq = gameBoard.determineSquare(tile.id.toString());
+            gameBoard.setBoard(sq[0], sq[1], playerO.marker);
+            game.checkWinner(playerO.marker);
+          }
         }
       }
-    }
+    } else {
+      //handle computer response if computer vs player
+      if (game.getTilesMarked() < 9) {
+        if (game.checkTurn() === "X") {
+          if (tile.firstChild.innerHTML === "") {
+            game.increaseTilesMarked();
+            tile.firstChild.innerHTML = playerX.marker;
+            const sq = gameBoard.determineSquare(tile.id.toString());
+            gameBoard.setBoard(sq[0], sq[1], playerX.marker);
+            let won = game.checkWinner(playerX.marker);
+            if (!won) {
+              game.computerPlaceTile("O");
+              game.checkWinner(playerO.marker);
+            }
+          }
+        } else {
+          if (tile.firstChild.innerHTML === "") {
+            game.increaseTilesMarked();
+            tile.firstChild.innerHTML = playerO.marker;
+            const sq = gameBoard.determineSquare(tile.id.toString());
+            gameBoard.setBoard(sq[0], sq[1], playerO.marker);
+            let won = game.checkWinner(playerO.marker);
+            if (!won) {
+              game.computerPlaceTile("X");
+              game.checkWinner(playerX.marker);
+            }
+          }
+        }
+      }
     }
   });
 });
@@ -58,13 +89,13 @@ const playerFactory = (name, marker, isHuman) => {
 
   const changePlayerType = () => {
     isHuman = !isHuman;
-  }
+  };
 
   const checkHuman = () => {
     return isHuman;
-  }
+  };
 
-  return { changeName, getName, marker, checkHuman, changePlayerType};
+  return { changeName, getName, marker, checkHuman, changePlayerType };
 };
 
 //board module pattern
@@ -87,6 +118,16 @@ const gameBoard = (() => {
       tile.firstChild.innerHTML = "";
     });
   };
+
+  //display board
+  const displayBoard = () => {
+    let flatBoard = board.flat();
+
+    boardTiles.forEach((tile, index) => {
+      tile.firstChild.innerHTML = flatBoard[index];
+    });
+  };
+
   const determineSquare = (tileId) => {
     //breakdown the id into which column and row and return in an array
     //used for sending into setBoard;
@@ -115,7 +156,7 @@ const gameBoard = (() => {
     }
     return rowCol;
   };
-  return { setBoard, clearBoard, determineSquare, board };
+  return { setBoard, clearBoard, determineSquare, board, displayBoard };
 })();
 
 //game module
@@ -151,7 +192,6 @@ const game = (() => {
   };
 
   const checkWinner = (marker) => {
-    increaseTilesMarked();
     if (checkRowW() || checkColW() || checkDiags()) {
       gameBoard.clearBoard();
       switch (marker) {
@@ -163,7 +203,12 @@ const game = (() => {
           break;
       }
       resetTilesMarked();
+      if (!playerX.checkHuman()) {
+        computerPlaceTile(playerX.marker);
+      }
+      return true;
     }
+    return false;
   };
 
   const checkTurn = () => {
@@ -236,24 +281,25 @@ const game = (() => {
     if (id === "Xcomputer") {
       if (playerO.checkHuman()) {
         playerX.changePlayerType();
-        xTypeComputer.classList.add("playerCard__option--active")
+        xTypeComputer.classList.add("playerCard__option--active");
         xTypePlayer.classList.remove("playerCard__option--active");
         gameBoard.clearBoard();
         game.resetScores();
+        computerPlaceTile(playerX.marker);
       }
     } else if (id === "Xplayer") {
       playerX.changePlayerType();
       xTypePlayer.classList.add("playerCard__option--active");
-      xTypeComputer.classList.remove("playerCard__option--active")
+      xTypeComputer.classList.remove("playerCard__option--active");
       gameBoard.clearBoard();
       game.resetScores();
     }
 
     //if it's the O Card
     if (id === "Ocomputer") {
-      if (playerO.checkHuman()) {
+      if (playerX.checkHuman()) {
         playerO.changePlayerType();
-        oTypeComputer.classList.add("playerCard__option--active")
+        oTypeComputer.classList.add("playerCard__option--active");
         oTypePlayer.classList.remove("playerCard__option--active");
         gameBoard.clearBoard();
         game.resetScores();
@@ -261,13 +307,46 @@ const game = (() => {
     } else if (id === "Oplayer") {
       playerO.changePlayerType();
       oTypePlayer.classList.add("playerCard__option--active");
-      oTypeComputer.classList.remove("playerCard__option--active")
+      oTypeComputer.classList.remove("playerCard__option--active");
       gameBoard.clearBoard();
       game.resetScores();
     }
-  }
+  };
+
+  const computerPlaceTile = (marker) => {
+    let rowIndex = 0;
+    let colIndex = 0;
+    let hasPlayed = false;
+
+    while (!hasPlayed) {
+      if (
+        gameBoard.board[0].indexOf("") !== -1 ||
+        gameBoard.board[1].indexOf("") !== -1 ||
+        gameBoard.board[2].indexOf("") !== -1
+      ) {
+
+      rowIndex = Math.floor(Math.random() * 3);
+      colIndex = Math.floor(Math.random() * 3);
+
+      if (gameBoard.board[rowIndex][colIndex] === "") {
+        hasPlayed = true;
+        gameBoard.setBoard(rowIndex, colIndex, marker);
+        gameBoard.displayBoard();
+        increaseTilesMarked();
+      }
+      } else {
+        hasPlayed = true;
+      }
+    }
+  };
 
   return {
-    resetScores, checkTurn, checkWinner, getTilesMarked, handlePlayerSwitch
+    resetScores,
+    checkTurn,
+    checkWinner,
+    getTilesMarked,
+    handlePlayerSwitch,
+    computerPlaceTile,
+    increaseTilesMarked,
   };
 })();
