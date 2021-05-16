@@ -1,23 +1,42 @@
 //on load, create both players, default 1 to user & 2 to CPU
 let playerX;
 let playerO;
+const playerONameInput = document.getElementById("playerONameInput");
+const playerXNameInput = document.getElementById("playerXNameInput");
+let banner = document.querySelector(".banner");
 
 window.addEventListener("load", () => {
   playerX = playerFactory("Player 1", "X", true);
   playerO = playerFactory("Computer", "O", false);
+
+  playerONameInput.classList.add("hide");
 });
 
 //add button logic to reset gameboard or end game and reset scores.
 const restartBtn = document.getElementById("restartBtn");
 restartBtn.addEventListener("click", () => {
   gameBoard.clearBoard();
-})
+});
 
 const endBtn = document.getElementById("endBtn");
 endBtn.addEventListener("click", () => {
   gameBoard.clearBoard();
   game.resetScores();
-})
+});
+
+//add events for player name inputs
+[playerONameInput, playerXNameInput].forEach(txtBox => {
+  txtBox.addEventListener("change", (e) => {
+    if (e.target.id === "playerXNameInput") {
+      console.log(e.target.value);
+      playerX.changeName(e.target.value);
+      banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
+    } else {
+      playerO.changeName(e.target.value);
+      banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
+    }
+  });
+});
 
 //get player type options
 const xTypePlayer = document.getElementById("Xplayer");
@@ -307,6 +326,10 @@ const game = (() => {
         gameBoard.clearBoard();
         game.resetScores();
         computerPlaceTile(playerX.marker);
+
+        playerXNameInput.classList.add("hide");
+        playerX.changeName("Computer");
+        banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
       }
     } else if (id === "Xplayer") {
       playerX.changePlayerType();
@@ -314,6 +337,11 @@ const game = (() => {
       xTypeComputer.classList.remove("playerCard__option--active");
       gameBoard.clearBoard();
       game.resetScores();
+
+      playerXNameInput.classList.remove("hide");
+      playerXNameInput.value = "Player 1";
+      playerO.changeName("Player 1");
+      banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
     }
 
     //if it's the O Card
@@ -324,6 +352,10 @@ const game = (() => {
         oTypePlayer.classList.remove("playerCard__option--active");
         gameBoard.clearBoard();
         game.resetScores();
+
+        playerONameInput.classList.add("hide");
+        playerO.changeName("Computer");
+        banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
       }
     } else if (id === "Oplayer") {
       playerO.changePlayerType();
@@ -331,6 +363,11 @@ const game = (() => {
       oTypeComputer.classList.remove("playerCard__option--active");
       gameBoard.clearBoard();
       game.resetScores();
+
+      playerONameInput.classList.remove("hide");
+      playerONameInput.value = "Player 2";
+      playerO.changeName("Player 2");
+      banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
     }
   };
 
@@ -345,16 +382,15 @@ const game = (() => {
         gameBoard.board[1].indexOf("") !== -1 ||
         gameBoard.board[2].indexOf("") !== -1
       ) {
+        rowIndex = Math.floor(Math.random() * 3);
+        colIndex = Math.floor(Math.random() * 3);
 
-      rowIndex = Math.floor(Math.random() * 3);
-      colIndex = Math.floor(Math.random() * 3);
-
-      if (gameBoard.board[rowIndex][colIndex] === "") {
-        hasPlayed = true;
-        gameBoard.setBoard(rowIndex, colIndex, marker);
-        gameBoard.displayBoard();
-        increaseTilesMarked();
-      }
+        if (gameBoard.board[rowIndex][colIndex] === "") {
+          hasPlayed = true;
+          gameBoard.setBoard(rowIndex, colIndex, marker);
+          gameBoard.displayBoard();
+          increaseTilesMarked();
+        }
       } else {
         hasPlayed = true;
       }
@@ -369,6 +405,6 @@ const game = (() => {
     handlePlayerSwitch,
     computerPlaceTile,
     increaseTilesMarked,
-    resetTilesMarked
+    resetTilesMarked,
   };
 })();
