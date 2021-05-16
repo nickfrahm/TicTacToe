@@ -363,7 +363,7 @@ const game = (() => {
 
       playerXNameInput.classList.remove("hide");
       playerXNameInput.value = "Player 1";
-      playerO.changeName("Player 1");
+      playerX.changeName("Player 1");
       banner.innerHTML = `${playerX.getName()} (${
         playerX.marker
       }) vs ${playerO.getName()} (${playerO.marker})`;
