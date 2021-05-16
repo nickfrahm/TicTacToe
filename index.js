@@ -7,6 +7,18 @@ window.addEventListener("load", () => {
   playerO = playerFactory("Computer", "O", false);
 });
 
+//add button logic to reset gameboard or end game and reset scores.
+const restartBtn = document.getElementById("restartBtn");
+restartBtn.addEventListener("click", () => {
+  gameBoard.clearBoard();
+})
+
+const endBtn = document.getElementById("endBtn");
+endBtn.addEventListener("click", () => {
+  gameBoard.clearBoard();
+  game.resetScores();
+})
+
 //get player type options
 const xTypePlayer = document.getElementById("Xplayer");
 const xTypeComputer = document.getElementById("Xcomputer");
@@ -117,6 +129,7 @@ const gameBoard = (() => {
     boardTiles.forEach((tile) => {
       tile.firstChild.innerHTML = "";
     });
+    game.resetTilesMarked();
   };
 
   //display board
@@ -206,6 +219,14 @@ const game = (() => {
       if (!playerX.checkHuman()) {
         computerPlaceTile(playerX.marker);
       }
+      return true;
+    } else if (
+      gameBoard.board[0].indexOf("") === -1 &&
+      gameBoard.board[1].indexOf("") === -1 &&
+      gameBoard.board[2].indexOf("") === -1
+    ) {
+      alert("Tie game!");
+      gameBoard.clearBoard();
       return true;
     }
     return false;
@@ -348,5 +369,6 @@ const game = (() => {
     handlePlayerSwitch,
     computerPlaceTile,
     increaseTilesMarked,
+    resetTilesMarked
   };
 })();
