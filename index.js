@@ -10,6 +10,23 @@ window.addEventListener("load", () => {
   playerO = playerFactory("Computer", "O", false);
 
   playerONameInput.classList.add("hide");
+  if (document.querySelector(".container").clientWidth <= 1000) {
+    document.querySelectorAll(".wave").forEach((wave) => {
+      wave.classList.add("hide");
+    });
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (document.querySelector("body").clientWidth < 1000) {
+    document.querySelectorAll(".wave").forEach((wave) => {
+      wave.classList.add("hide");
+    });
+  } else if (document.querySelector("body").clientWidth >= 1000) {
+    document.querySelectorAll(".wave").forEach((wave) => {
+      wave.classList.remove("hide");
+    });
+  }
 });
 
 //add button logic to reset gameboard or end game and reset scores.
@@ -25,15 +42,19 @@ endBtn.addEventListener("click", () => {
 });
 
 //add events for player name inputs
-[playerONameInput, playerXNameInput].forEach(txtBox => {
+[playerONameInput, playerXNameInput].forEach((txtBox) => {
   txtBox.addEventListener("change", (e) => {
     if (e.target.id === "playerXNameInput") {
       console.log(e.target.value);
       playerX.changeName(e.target.value);
-      banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
+      banner.innerHTML = `${playerX.getName()} (${
+        playerX.marker
+      }) vs ${playerO.getName()} (${playerO.marker})`;
     } else {
       playerO.changeName(e.target.value);
-      banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
+      banner.innerHTML = `${playerX.getName()} (${
+        playerX.marker
+      }) vs ${playerO.getName()} (${playerO.marker})`;
     }
   });
 });
@@ -329,7 +350,9 @@ const game = (() => {
 
         playerXNameInput.classList.add("hide");
         playerX.changeName("Computer");
-        banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
+        banner.innerHTML = `${playerX.getName()} (${
+          playerX.marker
+        }) vs ${playerO.getName()} (${playerO.marker})`;
       }
     } else if (id === "Xplayer") {
       playerX.changePlayerType();
@@ -341,7 +364,9 @@ const game = (() => {
       playerXNameInput.classList.remove("hide");
       playerXNameInput.value = "Player 1";
       playerO.changeName("Player 1");
-      banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
+      banner.innerHTML = `${playerX.getName()} (${
+        playerX.marker
+      }) vs ${playerO.getName()} (${playerO.marker})`;
     }
 
     //if it's the O Card
@@ -355,7 +380,9 @@ const game = (() => {
 
         playerONameInput.classList.add("hide");
         playerO.changeName("Computer");
-        banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
+        banner.innerHTML = `${playerX.getName()} (${
+          playerX.marker
+        }) vs ${playerO.getName()} (${playerO.marker})`;
       }
     } else if (id === "Oplayer") {
       playerO.changePlayerType();
@@ -367,7 +394,9 @@ const game = (() => {
       playerONameInput.classList.remove("hide");
       playerONameInput.value = "Player 2";
       playerO.changeName("Player 2");
-      banner.innerHTML = `${playerX.getName()} (${playerX.marker}) vs ${playerO.getName()} (${playerO.marker})`
+      banner.innerHTML = `${playerX.getName()} (${
+        playerX.marker
+      }) vs ${playerO.getName()} (${playerO.marker})`;
     }
   };
 
